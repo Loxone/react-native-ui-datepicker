@@ -165,7 +165,7 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
   );
 
   if (useTimePickerOnly) {
-    return undefined;
+    return null;
   }
 
   return (
