@@ -138,7 +138,7 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
     </Pressable>
   );
 
-  const format = includeSeconds ? 'HH:mm:ss' : 'HH:mm';
+  const format = includeSeconds ? 'LTS' : 'LT';
 
   const renderSelectors = (
     <>
