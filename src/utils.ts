@@ -8,12 +8,6 @@ export const YEAR_PAGE_SIZE = 12;
 
 export const getMonths = () => dayjs.months();
 
-export const getMonthName = (month: number) => dayjs.months()[month];
-
-export const getWeekdays = () => dayjs.weekdays();
-
-export const getWeekdaysShort = () => dayjs.weekdaysShort();
-
 export const getWeekdayIndex = (weekDayName: string) => dayjs.weekdaysMin().indexOf(weekDayName);
 
 export const getWeekdaysMin = (firstDayOfWeek: number) => {
@@ -32,11 +26,7 @@ export const getFormated = (date: DateType, includeSeconds?: boolean) =>
     includeSeconds ? CALENDAR_FORMAT_WITH_SECONDS : CALENDAR_FORMAT
   );
 
-export const getDateMonth = (date: DateType) => dayjs(date).month();
-
 export const getDateYear = (date: DateType) => dayjs(date).year();
-
-export const getToday = () => dayjs().format(DATE_FORMAT);
 
 export function areDatesOnSameDay(a: DateType, b: DateType) {
   if (!a || !b) {

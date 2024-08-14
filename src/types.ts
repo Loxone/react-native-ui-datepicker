@@ -100,5 +100,6 @@ export interface DatePickerBaseProps {
     monthName: (date: Date) => string;
     weekdayNameShort: (weekDayIndex: number) => string;
     time: (date: Date, shouldIncludeSeconds: boolean) => string;
+    year: (date: Date) => string;
   }
 }

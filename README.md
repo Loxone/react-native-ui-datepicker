@@ -59,16 +59,20 @@ For more, take a look at the `/example` directory.
 
 ## Calendar props
 
-| Name            | Type       | Default       | Description                                                              |
-| --------------- | ---------- | ------------- | ------------------------------------------------------------------------ |
-| mode            | `string`   | `'single'`    | Defines the DatePicker mode `['single', 'range', 'multiple']`            |
-| locale          | `string`   | `'en'`        | Defines the DatePicker locale                                            |
-| minDate         | `DateType` | `null`        | Defines DatePicker minimum selectable date                               |
-| maxDate         | `DateType` | `null`        | Defines DatePicker maximum selectable date                               |
-| firstDayOfWeek  | `number`   | `0`           | Defines the starting day of week, number 0-6, 0 - Sunday, 6 - Saturday   |
-| displayFullDays | `boolean`  | `false`       | Defines show previous and next month's days in the current calendar view |
-| initialView     | `string`   | `'day'`       | Defines the DatePicker initial view `['day', 'month', 'year', 'time']`   |
-| height          | `number`   | `'undefined'` | Defines the Calendar view heights                                        |
+| Name                | Type                                        | Default       | Description                                                              |
+|---------------------|---------------------------------------------|---------------|--------------------------------------------------------------------------|
+| mode                | `string`                                    | `'single'`    | Defines the DatePicker mode `['single', 'range', 'multiple']`            |
+| locale              | `string`                                    | `'en'`        | Defines the DatePicker locale                                            |
+| minDate             | `DateType`                                  | `null`        | Defines DatePicker minimum selectable date                               |
+| maxDate             | `DateType`                                  | `null`        | Defines DatePicker maximum selectable date                               |
+| firstDayOfWeek      | `number`                                    | `0`           | Defines the starting day of week, number 0-6, 0 - Sunday, 6 - Saturday   |
+| displayFullDays     | `boolean`                                   | `false`       | Defines show previous and next month's days in the current calendar view |
+| initialView         | `string`                                    | `'day'`       | Defines the DatePicker initial view `['day', 'month', 'year', 'time']`   |
+| height              | `number`                                    | `'undefined'` | Defines the Calendar view heights                                        |
+| includeSeconds      | `boolean`                                   | `'false'`     | Defines if seconds should be included in the time selection              |
+| CustomSelectorViews | `Record<CalendarViews,ReactNode>`           | `'undefined'` | Defines custom selector views to replace the default views               |
+| formatters          | `{monthName, weekdayNameShort, time, year}` | `'undefined'` | Defines formatting functions for internationalized date and time labels  |
+| useTimePickerOnly   | `boolean`                                   | `'false'`     | Defines that the calendar should only provide time selection             |
 
 <p align="center">
 <img src="/.github/images/modes-screenshot.png" />

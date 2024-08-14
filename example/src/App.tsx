@@ -231,7 +231,8 @@ export default function App() {
                   const currentWeekDayIndex = new Date().getDay();
                   const diff = weekDayIndex - currentWeekDayIndex;
                   return dayjs().add(diff, 'day').locale(locale).format('ddd');
-                }
+                },
+                year: (date) => dayjs(date).format('YYYY'),
               }}
             />
             <View style={styles.footer}>

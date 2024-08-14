@@ -25,8 +25,9 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
     formatters,
   } = useCalendarContext();
 
-  const currentMonthText = formatters.monthName(dayjs(currentDate).toDate());
-  const currentTimeText = formatters.time(dayjs(date).toDate(), includeSeconds);
+  const formattedCurrentMonth = formatters.monthName(dayjs(currentDate).toDate());
+  const formattedCurrentYear = formatters.year(dayjs(currentDate).toDate());
+  const formattedTime = formatters.time(dayjs(date).toDate(), includeSeconds);
 
   const renderPrevButton = (
     <Pressable
@@ -102,13 +103,13 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
         }}
         testID="btn-year"
         accessibilityRole="button"
-        accessibilityLabel={dayjs(currentDate).year().toString()}
+        accessibilityLabel={formattedCurrentYear}
       >
         <View style={[styles.textContainer, theme?.headerTextContainerStyle]}>
           <Text style={[styles.text, theme?.headerTextStyle]}>
             {calendarView === 'year'
               ? `${years.at(0)} - ${years.at(-1)}`
-              : dayjs(currentDate).year().toString()}
+              : formattedCurrentYear}
           </Text>
         </View>
       </Pressable>
@@ -129,11 +130,11 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
       }
       testID="btn-month"
       accessibilityRole="button"
-      accessibilityLabel={currentMonthText}
+      accessibilityLabel={formattedCurrentMonth}
     >
       <View style={[styles.textContainer, theme?.headerTextContainerStyle]}>
         <Text style={[styles.text, theme?.headerTextStyle]}>
-          {currentMonthText}
+          {formattedCurrentMonth}
         </Text>
       </View>
     </Pressable>
@@ -151,10 +152,10 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
             setCalendarView(calendarView === 'time' ? 'day' : 'time')
           }
           accessibilityRole="button"
-          accessibilityLabel={currentTimeText}
+          accessibilityLabel={formattedTime}
         >
           <View style={[styles.textContainer, theme?.headerTextContainerStyle]}>
-            <Text style={[styles.text, theme?.headerTextStyle]}>{currentTimeText}</Text>
+            <Text style={[styles.text, theme?.headerTextStyle]}>{formattedTime}</Text>
           </View>
         </Pressable>
       ) : null}
