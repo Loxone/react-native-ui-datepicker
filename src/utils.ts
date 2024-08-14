@@ -14,6 +14,8 @@ export const getWeekdays = () => dayjs.weekdays();
 
 export const getWeekdaysShort = () => dayjs.weekdaysShort();
 
+export const getWeekdayIndex = (weekDayName: string) => dayjs.weekdaysMin().indexOf(weekDayName);
+
 export const getWeekdaysMin = (firstDayOfWeek: number) => {
   let days = dayjs.weekdaysMin();
   if (firstDayOfWeek > 0) {

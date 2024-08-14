@@ -83,6 +83,7 @@ const DateTimePicker = (
     CustomSelectorViews,
     useTimePickerOnly = false,
     initialView = useTimePickerOnly ? "time" : 'day',
+    formatters,
     ...rest
   } = props;
 
@@ -316,6 +317,7 @@ const DateTimePicker = (
         onChangeYear,
         includeSeconds,
         useTimePickerOnly,
+        formatters,
       }}
     >
       <Calendar

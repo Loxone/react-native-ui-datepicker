@@ -12,6 +12,7 @@ import {
   isDateBetween,
   getDate,
   getFormated,
+  getWeekdayIndex,
 } from '../utils';
 
 const DaySelector = () => {
@@ -30,6 +31,7 @@ const DaySelector = () => {
     theme,
     height,
     includeSeconds,
+    formatters,
   } = useCalendarContext();
 
   const { year, month, hour, minute, second } = getParsedDate(currentDate);
@@ -181,11 +183,13 @@ const DaySelector = () => {
         style={[styles.weekDaysContainer, theme?.weekDaysContainerStyle]}
         testID="week-days"
       >
-        {getWeekdaysMin(firstDayOfWeek)?.map((item, index) => (
+        {getWeekdaysMin(firstDayOfWeek)?.map((item, index) => {
+          const formattedItem = formatters.weekdayNameShort(getWeekdayIndex(item));
+          return (
           <View key={index} style={styles.weekDayCell}>
-            <Text style={theme?.weekDaysTextStyle}>{item}</Text>
+            <Text style={theme?.weekDaysTextStyle}>{formattedItem}</Text>
           </View>
-        ))}
+        )})}
       </View>
       <View style={styles.daysContainer} testID="days">
         {daysGrid?.map((day, index) => {

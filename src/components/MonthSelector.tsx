@@ -4,7 +4,7 @@ import { useCalendarContext } from '../CalendarContext';
 import { getParsedDate, getMonths } from '../utils';
 
 const MonthSelector = () => {
-  const { currentDate, onSelectMonth, theme } = useCalendarContext();
+  const { currentDate, onSelectMonth, theme, formatters } = useCalendarContext();
   const { month } = getParsedDate(currentDate);
 
   return (
@@ -24,6 +24,8 @@ const MonthSelector = () => {
               ? { color: '#fff', ...theme?.selectedTextStyle }
               : theme?.calendarTextStyle;
 
+          const formattedItem = formatters?.monthName ? formatters.monthName(new Date(2024, index, 1)) : item;
+
           return (
             <Pressable
               key={index}
@@ -40,7 +42,7 @@ const MonthSelector = () => {
                 ]}
               >
                 <Text key={index} style={textStyle}>
-                  {item}
+                  {formattedItem}
                 </Text>
               </View>
             </Pressable>
