@@ -18,6 +18,7 @@ import 'dayjs/locale/de';
 import 'dayjs/locale/es';
 import 'dayjs/locale/fr';
 import 'dayjs/locale/tr';
+import { getDefaultFormatters } from '../../src/__tests__/utils';
 
 const Themes: ITheme[] = [
   { mainColor: '#0047FF', activeTextColor: '#fff' },
@@ -224,16 +225,7 @@ export default function App() {
               todayContainerStyle={{
                 borderWidth: 1,
               }} useTimePickerOnly={useTimePickerOnly}
-              formatters={{
-                time: (date, shouldIncludeSeconds) => dayjs(date).format( shouldIncludeSeconds ? "hh:mm:ss: A" : "hh:mm A"),
-                monthName: (date) => dayjs(date).locale(locale).format('MMMM'),
-                weekdayNameShort: (weekDayIndex) => {
-                  const currentWeekDayIndex = new Date().getDay();
-                  const diff = weekDayIndex - currentWeekDayIndex;
-                  return dayjs().add(diff, 'day').locale(locale).format('ddd');
-                },
-                year: (date) => dayjs(date).format('YYYY'),
-              }}
+              formatters={getDefaultFormatters(locale)}
             />
             <View style={styles.footer}>
               {mode === 'single' ? (

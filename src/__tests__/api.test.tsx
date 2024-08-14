@@ -7,13 +7,14 @@ import 'dayjs/locale/de';
 import 'dayjs/locale/es';
 import 'dayjs/locale/fr';
 import 'dayjs/locale/tr';
+import { getDefaultFormatters } from './utils';
 
 describe('API TESTS', () => {
   test('should display the passed date', () => {
     const selectedDate = new Date(2020, 11, 19);
     const month = selectedDate.toLocaleString('en-US', { month: 'long' });
 
-    render(<DateTimePicker mode="single" date={selectedDate} />);
+    render(<DateTimePicker mode="single" date={selectedDate} formatters={getDefaultFormatters()} />);
     expect(screen.getByText(month)).toBeVisible();
     expect(screen.getByText('19')).toBeVisible();
     expect(screen.getByText('2020')).toBeVisible();
