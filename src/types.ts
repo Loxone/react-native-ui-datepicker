@@ -95,5 +95,11 @@ export interface DatePickerBaseProps {
   initialView?: CalendarViews;
   height?: number;
   includeSeconds?: boolean;
-  CustomSelectorViews?: Partial<Record<CalendarViews, ReactNode>>
+  CustomSelectorViews?: Partial<Record<CalendarViews, ReactNode>>;
+  formatters: {
+    monthName: (date: Date) => string;
+    weekdayNameShort: (weekDayIndex: number) => string;
+    time: (date: Date, shouldIncludeSeconds: boolean) => string;
+    year: (date: Date) => string;
+  }
 }

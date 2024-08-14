@@ -19,13 +19,15 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
     calendarView,
     setCalendarView,
     theme,
-    locale,
     timePicker,
-    includeSeconds,
+    includeSeconds = false,
     useTimePickerOnly,
+    formatters,
   } = useCalendarContext();
 
-  const currentMonthText = dayjs(currentDate).locale(locale).format('MMMM');
+  const formattedCurrentMonth = formatters.monthName(dayjs(currentDate).toDate());
+  const formattedCurrentYear = formatters.year(dayjs(currentDate).toDate());
+  const formattedTime = formatters.time(dayjs(date).toDate(), includeSeconds);
 
   const renderPrevButton = (
     <Pressable
@@ -101,13 +103,13 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
         }}
         testID="btn-year"
         accessibilityRole="button"
-        accessibilityLabel={dayjs(currentDate).format('YYYY')}
+        accessibilityLabel={formattedCurrentYear}
       >
         <View style={[styles.textContainer, theme?.headerTextContainerStyle]}>
           <Text style={[styles.text, theme?.headerTextStyle]}>
             {calendarView === 'year'
               ? `${years.at(0)} - ${years.at(-1)}`
-              : dayjs(currentDate).format('YYYY')}
+              : formattedCurrentYear}
           </Text>
         </View>
       </Pressable>
@@ -128,17 +130,15 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
       }
       testID="btn-month"
       accessibilityRole="button"
-      accessibilityLabel={currentMonthText}
+      accessibilityLabel={formattedCurrentMonth}
     >
       <View style={[styles.textContainer, theme?.headerTextContainerStyle]}>
         <Text style={[styles.text, theme?.headerTextStyle]}>
-          {currentMonthText}
+          {formattedCurrentMonth}
         </Text>
       </View>
     </Pressable>
   );
-
-  const format = includeSeconds ? 'LTS' : 'LT';
 
   const renderSelectors = (
     <>
@@ -152,12 +152,10 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
             setCalendarView(calendarView === 'time' ? 'day' : 'time')
           }
           accessibilityRole="button"
-          accessibilityLabel={dayjs(date).format(format)}
+          accessibilityLabel={formattedTime}
         >
           <View style={[styles.textContainer, theme?.headerTextContainerStyle]}>
-            <Text style={[styles.text, theme?.headerTextStyle]}>
-              {dayjs(date).format(format)}
-            </Text>
+            <Text style={[styles.text, theme?.headerTextStyle]}>{formattedTime}</Text>
           </View>
         </Pressable>
       ) : null}

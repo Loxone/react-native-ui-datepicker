@@ -33,7 +33,7 @@ const Themes: ITheme[] = [
 export default function App() {
   const [mode, setMode] = useState<ModeType>('single');
   const [timePicker, setTimePicker] = useState(true);
-  const [useTimePickerOnly, setUseTimePickerOnly] = useState(true);
+  const [useTimePickerOnly, setUseTimePickerOnly] = useState(false);
 
   const [date, setDate] = useState<DateType | undefined>();
   const [range, setRange] = React.useState<{
@@ -224,6 +224,16 @@ export default function App() {
               todayContainerStyle={{
                 borderWidth: 1,
               }} useTimePickerOnly={useTimePickerOnly}
+              formatters={{
+                time: (date, shouldIncludeSeconds) => dayjs(date).format( shouldIncludeSeconds ? "hh:mm:ss: A" : "hh:mm A"),
+                monthName: (date) => dayjs(date).locale(locale).format('MMMM'),
+                weekdayNameShort: (weekDayIndex) => {
+                  const currentWeekDayIndex = new Date().getDay();
+                  const diff = weekDayIndex - currentWeekDayIndex;
+                  return dayjs().add(diff, 'day').locale(locale).format('ddd');
+                },
+                year: (date) => dayjs(date).format('YYYY'),
+              }}
             />
             <View style={styles.footer}>
               {mode === 'single' ? (
