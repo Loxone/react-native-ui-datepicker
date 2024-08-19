@@ -29,9 +29,11 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
   const formattedCurrentYear = formatters.year(dayjs(currentDate).toDate());
   const formattedTime = formatters.time(dayjs(date).toDate(), includeSeconds);
 
+  const hidePrevNextButtons = calendarView === 'time' || calendarView === "month";
+
   const renderPrevButton = (
     <Pressable
-      disabled={calendarView === 'time'}
+      disabled={hidePrevNextButtons}
       onPress={() =>
         calendarView === 'day'
           ? onChangeMonth(-1)
@@ -48,14 +50,21 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
         style={[styles.iconContainer, styles.prev, theme?.headerButtonStyle]}
       >
         {buttonPrevIcon || (
-          <Image
-            source={arrow_left}
-            style={{
-              width: theme?.headerButtonSize || 18,
-              height: theme?.headerButtonSize || 18,
-              tintColor: theme?.headerButtonColor,
-            }}
-          />
+          hidePrevNextButtons ?
+            <View
+              style={{
+                width: theme?.headerButtonSize || 18,
+                height: theme?.headerButtonSize || 18,
+              }}
+            /> :
+            <Image
+              source={arrow_left}
+              style={{
+                width: theme?.headerButtonSize || 18,
+                height: theme?.headerButtonSize || 18,
+                tintColor: theme?.headerButtonColor,
+              }}
+            />
         )}
       </View>
     </Pressable>
@@ -63,7 +72,7 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
 
   const renderNextButton = (
     <Pressable
-      disabled={calendarView === 'time'}
+      disabled={hidePrevNextButtons}
       onPress={() =>
         calendarView === 'day'
           ? onChangeMonth(1)
@@ -80,14 +89,21 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
         style={[styles.iconContainer, styles.next, theme?.headerButtonStyle]}
       >
         {buttonNextIcon || (
-          <Image
-            source={arrow_right}
-            style={{
-              width: theme?.headerButtonSize || 18,
-              height: theme?.headerButtonSize || 18,
-              tintColor: theme?.headerButtonColor,
-            }}
-          />
+          hidePrevNextButtons ?
+            <View
+              style={{
+                width: theme?.headerButtonSize || 18,
+                height: theme?.headerButtonSize || 18,
+              }}
+            /> :
+            <Image
+              source={arrow_right}
+              style={{
+                width: theme?.headerButtonSize || 18,
+                height: theme?.headerButtonSize || 18,
+                tintColor: theme?.headerButtonColor,
+              }}
+            />
         )}
       </View>
     </Pressable>
