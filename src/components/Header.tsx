@@ -14,6 +14,8 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
     date,
     currentDate,
     currentYear,
+    maxDate,
+    minDate,
     onChangeMonth,
     onChangeYear,
     calendarView,
@@ -29,11 +31,17 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
   const formattedCurrentYear = formatters.year(dayjs(currentDate).toDate());
   const formattedTime = formatters.time(dayjs(date).toDate(), includeSeconds);
 
+  const nextYearRange = getYearRange(currentYear + YEAR_PAGE_SIZE);
+  const prevYearRange = getYearRange(currentYear - YEAR_PAGE_SIZE);
+  const isNextYearPageAfterMax = maxDate ? nextYearRange.at(0) > getDateYear(maxDate) : false;
+  const isPrevYearPageBeforeMin = minDate ? prevYearRange.at(-1) < getDateYear(minDate) : false;
   const hidePrevNextButtons = calendarView === 'time' || calendarView === "month";
+  const hidePrevButton = (calendarView === 'year' && isPrevYearPageBeforeMin) || hidePrevNextButtons;
+  const hideNextButton = (calendarView === 'year' && isNextYearPageAfterMax) || hidePrevNextButtons;
 
   const renderPrevButton = (
     <Pressable
-      disabled={hidePrevNextButtons}
+      disabled={hidePrevButton}
       onPress={() =>
         calendarView === 'day'
           ? onChangeMonth(-1)
@@ -50,7 +58,7 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
         style={[styles.iconContainer, styles.prev, theme?.headerButtonStyle]}
       >
         {buttonPrevIcon || (
-          hidePrevNextButtons ?
+          hidePrevButton ?
             <View
               style={{
                 width: theme?.headerButtonSize || 18,
@@ -72,7 +80,7 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
 
   const renderNextButton = (
     <Pressable
-      disabled={hidePrevNextButtons}
+      disabled={hideNextButton}
       onPress={() =>
         calendarView === 'day'
           ? onChangeMonth(1)
@@ -89,7 +97,7 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
         style={[styles.iconContainer, styles.next, theme?.headerButtonStyle]}
       >
         {buttonNextIcon || (
-          hidePrevNextButtons ?
+          hideNextButton ?
             <View
               style={{
                 width: theme?.headerButtonSize || 18,
