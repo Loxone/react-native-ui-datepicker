@@ -31,10 +31,17 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
   const formattedCurrentYear = formatters.year(dayjs(currentDate).toDate());
   const formattedTime = formatters.time(dayjs(date).toDate(), includeSeconds);
 
+  const minYear = minDate ? getDateYear(minDate) : 0;
+  const maxYear = maxDate ? getDateYear(maxDate) : 3000;
+
   const nextYearRange = getYearRange(currentYear + YEAR_PAGE_SIZE);
   const prevYearRange = getYearRange(currentYear - YEAR_PAGE_SIZE);
-  const isNextYearPageAfterMax = maxDate ? nextYearRange.at(0) > getDateYear(maxDate) : false;
-  const isPrevYearPageBeforeMin = minDate ? prevYearRange.at(-1) < getDateYear(minDate) : false;
+  const firstYearOfNextPage = nextYearRange[0] ?? 3000;
+  const lastYearOfPrevPage = prevYearRange.at(-1) ?? 0;
+
+  const isNextYearPageAfterMax = firstYearOfNextPage > maxYear;
+  const isPrevYearPageBeforeMin = lastYearOfPrevPage < minYear;
+
   const hidePrevNextButtons = calendarView === 'time' || calendarView === "month";
   const hidePrevButton = (calendarView === 'year' && isPrevYearPageBeforeMin) || hidePrevNextButtons;
   const hideNextButton = (calendarView === 'year' && isNextYearPageAfterMax) || hidePrevNextButtons;

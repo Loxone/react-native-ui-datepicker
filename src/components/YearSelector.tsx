@@ -18,7 +18,7 @@ const YearSelector = () => {
   const selectedYear = getDateYear(date);
 
   const generateCells = useCallback(() => {
-    const years = getYearRange(currentYear, minYear, maxYear);
+    const years = getYearRange(currentYear);
     const activeYear = getDateYear(currentDate);
     const column = years.map((year) => {
       const activeItemStyle: ViewStyle =
@@ -43,7 +43,13 @@ const YearSelector = () => {
             }
           : { ...theme?.calendarTextStyle };
 
-      const isDisabled = year > maxYear || year < minYear;
+      let isDisabled = false;
+
+      if (maxYear && year > maxYear) {
+        isDisabled = true;
+      } else if (minYear && year < minYear) {
+        isDisabled = true;
+      }
 
       return (
         <Pressable
