@@ -64,14 +64,15 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
       <View
         style={[styles.iconContainer, styles.prev, theme?.headerButtonStyle]}
       >
-        {buttonPrevIcon || (
-          hidePrevButton ?
-            <View
-              style={{
-                width: theme?.headerButtonSize || 18,
-                height: theme?.headerButtonSize || 18,
-              }}
-            /> :
+        {hidePrevButton ? (
+          <View
+            style={{
+              width: theme?.headerButtonSize || 18,
+              height: theme?.headerButtonSize || 18,
+            }}
+          />
+        ) : (
+          buttonPrevIcon || (
             <Image
               source={arrow_left}
               style={{
@@ -80,6 +81,7 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
                 tintColor: theme?.headerButtonColor,
               }}
             />
+          )
         )}
       </View>
     </Pressable>
@@ -103,14 +105,15 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
       <View
         style={[styles.iconContainer, styles.next, theme?.headerButtonStyle]}
       >
-        {buttonNextIcon || (
-          hideNextButton ?
-            <View
-              style={{
-                width: theme?.headerButtonSize || 18,
-                height: theme?.headerButtonSize || 18,
-              }}
-            /> :
+        {hideNextButton ? (
+          <View
+            style={{
+              width: theme?.headerButtonSize || 18,
+              height: theme?.headerButtonSize || 18,
+            }}
+          />
+        ) : (
+          buttonNextIcon || (
             <Image
               source={arrow_right}
               style={{
@@ -119,6 +122,7 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
                 tintColor: theme?.headerButtonColor,
               }}
             />
+          )
         )}
       </View>
     </Pressable>
