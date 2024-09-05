@@ -6,6 +6,7 @@ import {
   getEndOfDay,
   getStartOfDay,
   areDatesOnSameDay,
+  clampDate,
 } from './utils';
 import CalendarContext from './CalendarContext';
 import { CalendarViews, CalendarActionKind } from './enums';
@@ -251,10 +252,8 @@ const DateTimePicker = (
   const onSelectMonth = useCallback(
     (month: number) => {
       const newDate = getDate(state.currentDate).month(month);
-      dispatch({
-        type: CalendarActionKind.CHANGE_CURRENT_DATE,
-        payload: getFormated(newDate, includeSeconds),
-      });
+      const safeNewDate = clampDate(newDate, minDate, maxDate);
+      onSelectDate(safeNewDate);
       dispatch({
         type: CalendarActionKind.SET_CALENDAR_VIEW,
         payload: 'day',
@@ -266,10 +265,8 @@ const DateTimePicker = (
   const onSelectYear = useCallback(
     (year: number) => {
       const newDate = getDate(state.currentDate).year(year);
-      dispatch({
-        type: CalendarActionKind.CHANGE_CURRENT_DATE,
-        payload: getFormated(newDate, includeSeconds),
-      });
+      const safeNewDate = clampDate(newDate, minDate, maxDate);
+      onSelectDate(safeNewDate);
       dispatch({
         type: CalendarActionKind.SET_CALENDAR_VIEW,
         payload: 'day',

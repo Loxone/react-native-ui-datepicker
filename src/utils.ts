@@ -53,7 +53,24 @@ export function isDateBetween(
     return false;
   }
 
-  return dayjs(date) <= endDate && dayjs(date) >= startDate;
+  return dayjs(date) <= dayjs(endDate) && dayjs(date) >= dayjs(startDate);
+}
+
+export function clampDate(date: DateType, minDate: DateType, maxDate: DateType) {
+  if (!date) {
+    return date;
+  }
+  const comparableDate = dayjs(date);
+  const comparableMinDate = minDate ? dayjs(minDate) : undefined;
+  const comparableMaxDate = maxDate ? dayjs(maxDate) : undefined;
+
+  if (comparableMinDate && comparableDate < comparableMinDate) {
+    return minDate;
+  }
+  if (comparableMaxDate && comparableDate > comparableMaxDate) {
+    return maxDate;
+  }
+  return date;
 }
 
 export const getFormatedDate = (date: DateType, format: string) =>

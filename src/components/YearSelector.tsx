@@ -11,8 +11,10 @@ import { useCalendarContext } from '../CalendarContext';
 import { getDateYear, getYearRange } from '../utils';
 
 const YearSelector = () => {
-  const { currentDate, currentYear, date, onSelectYear, theme } =
+  const { currentDate, currentYear, date, onSelectYear, theme, minDate, maxDate } =
     useCalendarContext();
+  const minYear = minDate ? getDateYear(minDate) : undefined;
+  const maxYear = maxDate ? getDateYear(maxDate) : undefined;
   const selectedYear = getDateYear(date);
 
   const generateCells = useCallback(() => {
@@ -41,13 +43,22 @@ const YearSelector = () => {
             }
           : { ...theme?.calendarTextStyle };
 
+      let isDisabled = false;
+
+      if (maxYear && year > maxYear) {
+        isDisabled = true;
+      } else if (minYear && year < minYear) {
+        isDisabled = true;
+      }
+
       return (
         <Pressable
           key={year}
           onPress={() => onSelectYear(year)}
-          style={styles.yearCell}
+          style={[styles.yearCell, isDisabled ? styles.disabledYearCell : {}]}
           accessibilityRole="button"
           accessibilityLabel={year.toString()}
+          disabled={isDisabled}
         >
           <View
             style={[styles.year, theme?.yearContainerStyle, activeItemStyle]}
@@ -60,7 +71,7 @@ const YearSelector = () => {
       );
     });
     return column;
-  }, [onSelectYear, selectedYear, currentYear, currentDate, theme]);
+  }, [onSelectYear, selectedYear, currentYear, currentDate, theme, minYear, maxYear]);
 
   return (
     <View style={styles.container} testID="year-selector">
@@ -79,6 +90,9 @@ const styles = StyleSheet.create({
   },
   yearCell: {
     width: '33.3%',
+  },
+  disabledYearCell: {
+    opacity: 0.3,
   },
   years: {
     flexDirection: 'row',

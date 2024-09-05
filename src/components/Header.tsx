@@ -14,6 +14,8 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
     date,
     currentDate,
     currentYear,
+    maxDate,
+    minDate,
     onChangeMonth,
     onChangeYear,
     calendarView,
@@ -29,11 +31,24 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
   const formattedCurrentYear = formatters.year(dayjs(currentDate).toDate());
   const formattedTime = formatters.time(dayjs(date).toDate(), includeSeconds);
 
+  const minYear = minDate ? getDateYear(minDate) : 0;
+  const maxYear = maxDate ? getDateYear(maxDate) : 3000;
+
+  const nextYearRange = getYearRange(currentYear + YEAR_PAGE_SIZE);
+  const prevYearRange = getYearRange(currentYear - YEAR_PAGE_SIZE);
+  const firstYearOfNextPage = nextYearRange[0] ?? 3000;
+  const lastYearOfPrevPage = prevYearRange.at(-1) ?? 0;
+
+  const isNextYearPageAfterMax = firstYearOfNextPage > maxYear;
+  const isPrevYearPageBeforeMin = lastYearOfPrevPage < minYear;
+
   const hidePrevNextButtons = calendarView === 'time' || calendarView === "month";
+  const hidePrevButton = (calendarView === 'year' && isPrevYearPageBeforeMin) || hidePrevNextButtons;
+  const hideNextButton = (calendarView === 'year' && isNextYearPageAfterMax) || hidePrevNextButtons;
 
   const renderPrevButton = (
     <Pressable
-      disabled={hidePrevNextButtons}
+      disabled={hidePrevButton}
       onPress={() =>
         calendarView === 'day'
           ? onChangeMonth(-1)
@@ -49,14 +64,15 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
       <View
         style={[styles.iconContainer, styles.prev, theme?.headerButtonStyle]}
       >
-        {buttonPrevIcon || (
-          hidePrevNextButtons ?
-            <View
-              style={{
-                width: theme?.headerButtonSize || 18,
-                height: theme?.headerButtonSize || 18,
-              }}
-            /> :
+        {hidePrevButton ? (
+          <View
+            style={{
+              width: theme?.headerButtonSize || 18,
+              height: theme?.headerButtonSize || 18,
+            }}
+          />
+        ) : (
+          buttonPrevIcon || (
             <Image
               source={arrow_left}
               style={{
@@ -65,6 +81,7 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
                 tintColor: theme?.headerButtonColor,
               }}
             />
+          )
         )}
       </View>
     </Pressable>
@@ -72,7 +89,7 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
 
   const renderNextButton = (
     <Pressable
-      disabled={hidePrevNextButtons}
+      disabled={hideNextButton}
       onPress={() =>
         calendarView === 'day'
           ? onChangeMonth(1)
@@ -88,14 +105,15 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
       <View
         style={[styles.iconContainer, styles.next, theme?.headerButtonStyle]}
       >
-        {buttonNextIcon || (
-          hidePrevNextButtons ?
-            <View
-              style={{
-                width: theme?.headerButtonSize || 18,
-                height: theme?.headerButtonSize || 18,
-              }}
-            /> :
+        {hideNextButton ? (
+          <View
+            style={{
+              width: theme?.headerButtonSize || 18,
+              height: theme?.headerButtonSize || 18,
+            }}
+          />
+        ) : (
+          buttonNextIcon || (
             <Image
               source={arrow_right}
               style={{
@@ -104,6 +122,7 @@ const Header = ({ buttonPrevIcon, buttonNextIcon }: HeaderProps) => {
                 tintColor: theme?.headerButtonColor,
               }}
             />
+          )
         )}
       </View>
     </Pressable>
