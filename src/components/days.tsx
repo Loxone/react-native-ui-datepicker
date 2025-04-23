@@ -10,6 +10,7 @@ import {
   areDatesOnSameDay,
   isDateBetween,
   getDate,
+  getFormated,
 } from '../utils';
 import Weekdays from './weekdays';
 import { DateType } from 'src/types';
@@ -42,19 +43,24 @@ const Days = () => {
     hideWeekdays,
     components,
     isRTL,
+    // Loxone additions
+    includeSeconds,
   } = useCalendarContext();
 
   const style = useMemo(() => createDefaultStyles(isRTL), [isRTL]);
 
-  const { year, month, hour, minute } = getParsedDate(currentDate);
+  const { year, month, hour, minute, second } = getParsedDate(currentDate);
 
   const handleSelectDate = useCallback(
     (selectedDate: DateType) => {
-      const newDate = getDate(selectedDate).hour(hour).minute(minute);
+      let newDate = getDate(selectedDate).hour(hour).minute(minute);
+      if (includeSeconds) {
+        newDate = newDate.second(second);
+      }
 
-      onSelectDate(newDate);
+      onSelectDate(getFormated(newDate, includeSeconds));
     },
-    [onSelectDate, hour, minute]
+    [onSelectDate, hour, minute, second, includeSeconds]
   );
 
   const containerStyle = useMemo(
@@ -86,7 +92,8 @@ const Days = () => {
       prevMonthOffset,
       daysInCurrentMonth,
       daysInNextMonth,
-      numerals
+      numerals,
+      timeZone,
     ).map((day, index) => {
       if (!day) return null;
 

@@ -14,6 +14,7 @@ import { isEqual } from 'lodash';
 import { numeralSystems } from './numerals';
 
 export const CALENDAR_FORMAT = 'YYYY-MM-DD HH:mm';
+export const CALENDAR_FORMAT_WITH_SECONDS = 'YYYY-MM-DD HH:mm:ss';
 export const DATE_FORMAT = 'YYYY-MM-DD';
 export const YEAR_PAGE_SIZE = 12;
 export const VALID_JALALI_LOCALES = new Set(['fa', 'en']);
@@ -122,8 +123,8 @@ export const getWeekdays = (
   return weekdays;
 };
 
-export const getFormated = (date: DateType) =>
-  dayjs(date).format(CALENDAR_FORMAT);
+export const getFormated = (date: DateType, includeSeconds?: boolean) =>
+  dayjs(date).format(includeSeconds ? CALENDAR_FORMAT_WITH_SECONDS : CALENDAR_FORMAT);
 
 export const getDateMonth = (date: DateType) => dayjs(date).month();
 
@@ -285,6 +286,23 @@ export function isMonthDisabled(
   return false;
 }
 
+export function clampDate(date: DateType, minDate: DateType, maxDate: DateType) {
+    if (!date) {
+      return date;
+    }
+    const comparableDate = dayjs(date);
+    const comparableMinDate = minDate ? dayjs(minDate) : undefined;
+    const comparableMaxDate = maxDate ? dayjs(maxDate) : undefined;
+
+    if (comparableMinDate && comparableDate < comparableMinDate) {
+      return minDate;
+    }
+    if (comparableMaxDate && comparableDate > comparableMaxDate) {
+      return maxDate;
+    }
+    return date;
+  }
+
 /**
  * Get formated date
  *
@@ -439,6 +457,8 @@ export const getParsedDate = (date: DateType) => {
     hour12: parseInt(dayjs(date).format('hh')),
     minute: dayjs(date).minute(),
     period: dayjs(date).format('A'),
+    // Loxone additions
+    second: dayjs(date).second()
   };
 };
 
@@ -471,9 +491,10 @@ export const getMonthDays = (
   prevMonthOffset: number,
   daysInCurrentMonth: number,
   daysInNextMonth: number,
-  numerals: Numerals
+  numerals: Numerals,
+  timeZone: string | undefined
 ): CalendarDay[] => {
-  const date = dayjs(datetime);
+  const date = dayjs(datetime).tz(timeZone);
 
   const prevDays = showOutsideDays
     ? Array.from({ length: prevMonthOffset }, (_, index) => {

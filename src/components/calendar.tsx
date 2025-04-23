@@ -7,6 +7,7 @@ import Years from './years';
 import Months from './months';
 import Days from './days';
 import TimePicker from './time-picker';
+import { DatePickerBaseProps } from '../types';
 
 const CalendarView: Record<CalendarViews, ReactNode> = {
   year: <Years />,
@@ -15,7 +16,11 @@ const CalendarView: Record<CalendarViews, ReactNode> = {
   time: <TimePicker />,
 };
 
-const Calendar = () => {
+type CalendarProps = {
+    CustomCalendarViews?: DatePickerBaseProps['customCalendarViews'];
+};
+
+const Calendar = ({ CustomCalendarViews }: CalendarProps) => {
   const {
     hideHeader,
     calendarView,
@@ -26,6 +31,7 @@ const Calendar = () => {
     containerHeight,
     navigationPosition,
     isRTL,
+    useTimePickerOnly,
   } = useCalendarContext();
 
   const containerStyle: ViewStyle = useMemo(
@@ -37,7 +43,7 @@ const Calendar = () => {
 
   return (
     <View style={style} className={className} testID="calendar">
-      {!hideHeader ? (
+      {!hideHeader && !useTimePickerOnly ? (
         <Header
           navigationPosition={navigationPosition}
           styles={styles}
@@ -45,7 +51,7 @@ const Calendar = () => {
           isRTL={isRTL}
         />
       ) : null}
-      <View style={containerStyle}>{CalendarView[calendarView]}</View>
+      <View style={containerStyle}>{CustomCalendarViews?.[calendarView] ?? CalendarView[calendarView]}</View>
     </View>
   );
 };

@@ -12,6 +12,8 @@ import {
   getStartOfDay,
   areDatesOnSameDay,
   removeTime,
+  getFormated,
+  clampDate,
 } from './utils';
 import { CalendarContext } from './calendar-context';
 import {
@@ -93,7 +95,6 @@ const DateTimePicker = (
     min,
     max,
     onChange,
-    initialView = 'day',
     containerHeight = CONTAINER_HEIGHT,
     weekdaysHeight = WEEKDAYS_HEIGHT,
     style = {},
@@ -115,6 +116,11 @@ const DateTimePicker = (
     onMonthChange = () => {},
     onYearChange = () => {},
     use12Hours,
+    // Loxone additions
+    useTimePickerOnly = false,
+    initialView = useTimePickerOnly ? 'time' : 'day',
+    includeSeconds = false,
+    customCalendarViews
   } = props;
 
   dayjs.tz.setDefault(timeZone);
@@ -387,6 +393,15 @@ const DateTimePicker = (
     calendar,
   ]);
 
+  useEffect(() => {
+    if (useTimePickerOnly) {
+        dispatch({
+          type: CalendarActionKind.SET_CALENDAR_VIEW,
+          payload: 'time',
+        });
+      }
+  }, [useTimePickerOnly])
+
   const setCalendarView = useCallback((view: CalendarViews) => {
     dispatch({ type: CalendarActionKind.SET_CALENDAR_VIEW, payload: view });
   }, []);
@@ -523,6 +538,7 @@ const DateTimePicker = (
     (value: number) => {
       const currentMonth = dayjs(stateRef.current.currentDate).month();
       const newDate = dayjs(stateRef.current.currentDate).month(value);
+      const safeNewDate = clampDate(newDate, minDate, maxDate);
 
       // Only call onMonthChange if the month actually changed
       if (value !== currentMonth) {
@@ -531,11 +547,11 @@ const DateTimePicker = (
 
       dispatch({
         type: CalendarActionKind.CHANGE_CURRENT_DATE,
-        payload: newDate,
+        payload: safeNewDate,
       });
       setCalendarView('day');
     },
-    [setCalendarView, onMonthChange]
+    [setCalendarView, onMonthChange, includeSeconds]
   );
 
   // set the active displayed year
@@ -543,6 +559,7 @@ const DateTimePicker = (
     (value: number) => {
       const currentYear = dayjs(stateRef.current.currentDate).year();
       const newDate = dayjs(stateRef.current.currentDate).year(value);
+      const safeNewDate = clampDate(newDate, minDate, maxDate);
 
       // Only call onYearChange if the year actually changed
       if (value !== currentYear) {
@@ -551,11 +568,11 @@ const DateTimePicker = (
 
       dispatch({
         type: CalendarActionKind.CHANGE_CURRENT_DATE,
-        payload: newDate,
+        payload: safeNewDate,
       });
       setCalendarView('day');
     },
-    [setCalendarView, onYearChange]
+    [setCalendarView, onYearChange, includeSeconds]
   );
 
   const onChangeMonth = useCallback(
@@ -563,10 +580,10 @@ const DateTimePicker = (
       const newDate = dayjs(stateRef.current.currentDate).add(value, 'month');
       dispatch({
         type: CalendarActionKind.CHANGE_CURRENT_DATE,
-        payload: dayjs(newDate),
+        payload: getFormated(newDate, includeSeconds),
       });
     },
-    [stateRef, dispatch]
+    [stateRef, dispatch, includeSeconds]
   );
 
   const onChangeYear = useCallback(
@@ -634,6 +651,9 @@ const DateTimePicker = (
       style,
       className,
       use12Hours,
+      // Loxone additions
+      useTimePickerOnly,
+      includeSeconds,
     }),
     [
       mode,
@@ -664,6 +684,9 @@ const DateTimePicker = (
       style,
       className,
       use12Hours,
+      // Loxone additions
+      useTimePickerOnly,
+      includeSeconds,
     ]
   );
 
@@ -713,7 +736,7 @@ const DateTimePicker = (
 
   return (
     <CalendarContext.Provider value={memoizedValue}>
-      <Calendar />
+      <Calendar CustomCalendarViews={customCalendarViews} />
     </CalendarContext.Provider>
   );
 };
