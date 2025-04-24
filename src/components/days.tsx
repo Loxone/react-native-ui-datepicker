@@ -58,7 +58,7 @@ const Days = () => {
         newDate = newDate.second(second);
       }
 
-      onSelectDate(getFormated(newDate, includeSeconds));
+      onSelectDate(getFormated(newDate, includeSeconds, timeZone));
     },
     [onSelectDate, hour, minute, second, includeSeconds]
   );
