@@ -146,19 +146,19 @@ const DateTimePicker = (
     let initialDate = dayjs().tz(timeZone);
 
     if (mode === 'single' && date) {
-      initialDate = dayjs(date);
+      initialDate = dayjs(date).tz(timeZone);
     }
 
     if (mode === 'range' && startDate) {
-      initialDate = dayjs(startDate);
+      initialDate = dayjs(startDate).tz(timeZone);
     }
 
     if (mode === 'multiple' && dates && dates.length > 0) {
-      initialDate = dayjs(dates[0]);
+      initialDate = dayjs(dates[0]).tz(timeZone);
     }
 
     if (minDate && initialDate.isBefore(minDate)) {
-      initialDate = dayjs(minDate);
+      initialDate = dayjs(minDate).tz(timeZone);
     }
 
     if (month !== undefined && month && month >= 0 && month <= 11) {
@@ -169,34 +169,34 @@ const DateTimePicker = (
       initialDate = initialDate.year(year);
     }
 
-    let _date = (date ? dayjs(date) : date) as DateType;
+    let _date = (date ? dayjs(date).tz(timeZone) : date) as DateType;
 
     if (_date && maxDate && dayjs(_date).isAfter(maxDate)) {
-      _date = dayjs(maxDate);
+      _date = dayjs(maxDate).tz(timeZone);
     }
 
     if (_date && minDate && dayjs(_date).isBefore(minDate)) {
-      _date = dayjs(minDate);
+      _date = dayjs(minDate).tz(timeZone);
     }
 
-    let start = (startDate ? dayjs(startDate) : startDate) as DateType;
+    let start = (startDate ? dayjs(startDate).tz(timeZone) : startDate) as DateType;
 
     if (start && maxDate && dayjs(start).isAfter(maxDate)) {
-      start = dayjs(maxDate);
+      start = dayjs(maxDate).tz(timeZone);
     }
 
     if (start && minDate && dayjs(start).isBefore(minDate)) {
-      start = dayjs(minDate);
+      start = dayjs(minDate).tz(timeZone);
     }
 
-    let end = (endDate ? dayjs(endDate) : endDate) as DateType;
+    let end = (endDate ? dayjs(endDate).tz(timeZone) : endDate) as DateType;
 
     if (end && maxDate && dayjs(end).isAfter(maxDate)) {
-      end = dayjs(maxDate);
+      end = dayjs(maxDate).tz(timeZone);
     }
 
     if (end && minDate && dayjs(end).isBefore(minDate)) {
-      end = dayjs(minDate);
+      end = dayjs(minDate).tz(timeZone);
     }
 
     return {
