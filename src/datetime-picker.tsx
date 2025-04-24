@@ -171,7 +171,7 @@ const DateTimePicker = (
 
     let _date = (date ? dayjs(date).tz(timeZone) : date) as DateType;
 
-    if (_date && maxDate && dayjs(_date).isAfter(maxDate)) {
+    if (_date && maxDate && dayjs.tz(_date, timeZone).isAfter(dayjs.tz(maxDate, timeZone))) {
       _date = dayjs(maxDate).tz(timeZone);
     }
 
