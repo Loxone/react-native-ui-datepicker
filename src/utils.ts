@@ -123,8 +123,8 @@ export const getWeekdays = (
   return weekdays;
 };
 
-export const getFormated = (date: DateType, includeSeconds?: boolean, timeZone?: string) =>
-  dayjs.tz(date, timeZone).format(includeSeconds ? CALENDAR_FORMAT_WITH_SECONDS : CALENDAR_FORMAT);
+export const getFormated = (date: DateType, includeSeconds?: boolean) =>
+  dayjs(date).format(includeSeconds ? CALENDAR_FORMAT_WITH_SECONDS : CALENDAR_FORMAT);
 
 export const getDateMonth = (date: DateType) => dayjs(date).month();
 
