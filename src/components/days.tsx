@@ -10,7 +10,6 @@ import {
   areDatesOnSameDay,
   isDateBetween,
   getDate,
-  getFormated,
 } from '../utils';
 import Weekdays from './weekdays';
 import { DateType } from 'src/types';
@@ -54,11 +53,8 @@ const Days = () => {
   const handleSelectDate = useCallback(
     (selectedDate: DateType) => {
       let newDate = getDate(selectedDate).hour(hour).minute(minute);
-      if (includeSeconds) {
-        newDate = newDate.second(second);
-      }
 
-      onSelectDate(getFormated(newDate, includeSeconds));
+      onSelectDate(includeSeconds ? newDate.second(second) : newDate);
     },
     [onSelectDate, hour, minute, second, includeSeconds]
   );
