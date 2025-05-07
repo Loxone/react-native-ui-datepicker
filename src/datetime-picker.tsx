@@ -412,7 +412,7 @@ const DateTimePicker = (
         if (mode === 'single') {
           const newDate = timePicker
             ? dayjs.tz(selectedDate, timeZone)
-            : getStartOfTimezonedDay(date, timeZone);
+            : getStartOfTimezonedDay(selectedDate, timeZone);
 
           dispatch({
             type: CalendarActionKind.CHANGE_CURRENT_DATE,
