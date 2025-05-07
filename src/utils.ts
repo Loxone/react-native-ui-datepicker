@@ -407,6 +407,18 @@ export function getStartOfDay(date: DateType): DateType {
 }
 
 /**
+ * Get start of timezoned day
+ *
+ * @param date - date to get start of timezoned day from
+ * @param timeZone - time zone to get start of timezoned day from
+ *
+ * @returns start of timezoned day
+ */
+export function getStartOfTimezonedDay(date: DateType, timeZone: string | undefined): DateType {
+  return dayjs.tz(date, timeZone).startOf('day');
+}
+
+/**
  * Get end of day
  *
  * @param date - date to get end of day from
