@@ -14,7 +14,6 @@ import {
   removeTime,
   getFormated,
   clampDate,
-  getStartOfTimezonedDay,
 } from './utils';
 import { CalendarContext } from './calendar-context';
 import {
@@ -305,7 +304,7 @@ const DateTimePicker = (
         (date &&
           (timePicker
             ? dayjs.tz(date, timeZone)
-            : getStartOfTimezonedDay(date, timeZone))) ??
+            : getStartOfDay(dayjs.tz(date, timeZone)))) ??
         date;
 
       if (_date && maxDate && dayjs.tz(_date, timeZone).isAfter(maxDate)) {
