@@ -9,7 +9,6 @@ import { I18nManager } from 'react-native';
 import {
   dateToUnix,
   getEndOfDay,
-  getStartOfDay,
   areDatesOnSameDay,
   removeTime,
   getFormated,
@@ -413,7 +412,7 @@ const DateTimePicker = (
         if (mode === 'single') {
           const newDate = timePicker
             ? dayjs.tz(selectedDate, timeZone)
-            : dayjs.tz(getStartOfDay(selectedDate), timeZone);
+            : getStartOfTimezonedDay(date, timeZone);
 
           dispatch({
             type: CalendarActionKind.CHANGE_CURRENT_DATE,
