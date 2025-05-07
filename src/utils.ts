@@ -506,7 +506,7 @@ export const getMonthDays = (
   numerals: Numerals,
   timeZone: string | undefined
 ): CalendarDay[] => {
-  const date = dayjs.tz(datetime, timeZone);
+  const date = dayjs(datetime).tz(timeZone);
 
   const prevDays = showOutsideDays
     ? Array.from({ length: prevMonthOffset }, (_, index) => {
